@@ -5,6 +5,6 @@ Feel free to use it if you like. */
 
 .board{
   border: 1px black solid;
-  width: 100%;
+  width: 1000px;
   height: 800px;
 }
