@@ -14,7 +14,7 @@ var drag = d3.behavior.drag()
              .on('dragend', function() { circle.style('fill', 'black'); });
 
 var circle = d3.select('.board').selectAll('.player')
-                .data([{ x: (boxWidth / 2), y: (boxHeight / 2), r: 25 }])
+                .data([{ x: (boxWidth / 2), y: (boxHeight / 2), r: 15 }])
                 .enter()
                 .append('svg:circle')
                 .attr('class', 'player')
@@ -40,7 +40,7 @@ var addEnemies = function(){
   d3.select('.board').selectAll('image').data(gameEnemies)
   .enter().append('image')
   .attr('id', 'image')
-  .attr('xlink:href', "asteroid.png")
+  .attr('xlink:href', "giphy.gif")
   .attr('width', 100+"px")
   .attr('height', 100+"px")
   .attr('class', 'enemy')
@@ -53,7 +53,7 @@ var addEnemies = function(){
   })
   .attr('y', function(d){
     return d.y;
-  })
+  });
 }
 var updateEnemyArray = function() {
   // Iterate through enemy array
@@ -88,15 +88,26 @@ var distance = function(x1, y1, x2, y2) {
 var checkCollision= function(){
   var _enemies=d3.selectAll('.enemy');
   var _player= d3.selectAll('.player');
-  var playerX = _player.attr('x');
-  var playerY = _player.attr('y');
+  var playerX = _player.attr('cx');
+  var playerY = _player.attr('cy');
+  var scoreBoard = d3.select('body').selectAll('.scoreCount').text()
+  score++;
+  d3.select('body').selectAll('.scoreCount').text(score);
+  if(score>highScore){
+    highScore=score;
+    d3.select('body').selectAll('.highScoreCount').text(highScore);
+  }
   _enemies.each(function() {
     var enemyX = d3.select(this).attr('x');
     var enemyY = d3.select(this).attr('y');
-    if(distance(enemyX,enemyY,playerX,playerY)<200){
+    if(distance(enemyX,enemyY,playerX,playerY)<30){
       var temp= d3.select('body').selectAll('.collisionCount').text();
       d3.select('body').selectAll('.collisionCount').text(parseInt(temp)+1);
+      // debugger;
+      score=0;
+      d3.select('body').selectAll('.scoreCount').text(score);
       return true;
+
     }
   });
 }
@@ -107,8 +118,9 @@ var testCollision= function(){
   // console.log(_enemies.attr('y'));
   // console.log(_player.attr('cy'));
 }
-
-createEnemies(10);
+var highScore = 0;
+var score =0;
+createEnemies(20);
 addEnemies();
 setInterval(updateEnemyPosition, 1000);
-setInterval(checkCollision, 100);
+setInterval(checkCollision, 50);

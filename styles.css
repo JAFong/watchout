@@ -7,4 +7,18 @@ Feel free to use it if you like. */
   border: 1px black solid;
   width: 1000px;
   height: 800px;
+  background-image:url('giphy.gif');
+}
+
+/*.spin{
+  background-image:url('giphy.gif');
+  animation-name:rotation;
+  animation-duration:2s;
+  animation-iteration-count: infinite;
+  height:800px;
+  width:1000px;
+}*/
+@keyframes rotation {
+  from {transform: rotateZ(0deg);}
+  to {transform: rotate(360deg);}
 }
