@@ -6,40 +6,64 @@ var Enemy = function() {
 };
 var boxWidth = 800;
 var boxHeight = 800;
+var keyHandler = {
+  left: false,
+  up: false,
+  right: false,
+  down: false
+}
+d3.select('body').on('keydown',function(event){
+  //37 left
+  if(d3.event.keyCode === 37){
+    keyHandler.left=true;
+  }
+  //38 up
+  if(d3.event.keyCode === 38){
+   keyHandler.up=true;
+  }
+  //39 right
+  if(d3.event.keyCode === 39){
+    keyHandler.right=true;
+  }
+  //40 down
+  if(d3.event.keyCode === 40){
+    keyHandler.down=true;
+  }
 
-// var drag = d3.behavior.drag()
-//              .on('dragstart', function() { circle.style('fill', 'red'); })
-//              .on('drag', function() { circle.attr('cx', d3.event.x)
-//                                             .attr('cy', d3.event.y); })
-//               .on('dragend', function() { circle.style('fill', 'black'); });
+ });
+d3.select('body').on('keyup',function(event){
+  //37 left
+  if(d3.event.keyCode === 37){
+    keyHandler.left=false;
+  }
+  //38 up
+  if(d3.event.keyCode === 38){
+   keyHandler.up=false;
+  }
+  //39 right
+  if(d3.event.keyCode === 39){
+    keyHandler.right=false;
+  }
+  //40 down
+  if(d3.event.keyCode === 40){
+    keyHandler.down=false;
+  }
 
-// var circle = d3.select('.board').selectAll('.player')
-//                 .data([{ x: (boxWidth / 2), y: (boxHeight / 2), r: 15 }])
-//                 .enter()
-//                 .append('svg:circle')
-//                 .attr('class', 'player')
-//                 .attr('cx', function(d) { return d.x; })
-//                 .attr('cy', function(d) { return d.y; })
-//                 .attr('r', function(d) { return d.r; })
-//                 .call(drag)
-//                 .style('fill', 'black');
-
-// var keyPress = $('.player').on('keydown',function(event){
-//   if(event.key==="ArrowUp"){
-
-//   }
-//   if(event.key==="ArrowDown"){
-
-//   }
-//   if(event.key==="ArrowLeft"){
-
-//   }
-//   if(event.key==="ArrowRight"){
-
-//   }
-
-//  });
-
+ });
+var keyCheck=function(){
+  if(keyHandler.left){
+    d3.select('.player').attr('x', function(d) {return d.x -= 10;});
+  }
+  if(keyHandler.up){
+    d3.select('.player').attr('y', function(d) {return d.y -= 10;});
+  }
+  if(keyHandler.right){
+    d3.select('.player').attr('x', function(d) {return d.x += 10;});
+  }
+  if(keyHandler.down){
+    d3.select('.player').attr('y', function(d) {return d.y += 10;});
+  }
+};
 var player = d3.select('.board').selectAll('.player')
                 .data([{ x: (boxWidth / 2), y: (boxHeight / 2)}])
                 .enter()
@@ -47,8 +71,8 @@ var player = d3.select('.board').selectAll('.player')
                 .attr('class', 'player')
                 .attr('x', function(d) { return d.x; })
                 .attr('y', function(d) { return d.y; })
-                .attr('height', function(d) { return 50; })
-                .attr('width', function(d) { return 50; })
+                .attr('height', function(d) { return 75; })
+                .attr('width', function(d) { return 75; })
                 .attr('xlink:href', "dancingcowboydone2.gif")
                 // .call(keyPress);
 
@@ -151,3 +175,4 @@ createEnemies(20);
 addEnemies();
 setInterval(updateEnemyPosition, 1000);
 setInterval(checkCollision, 50);
+setInterval(keyCheck, 10);
