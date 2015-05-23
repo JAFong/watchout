@@ -7,23 +7,50 @@ var Enemy = function() {
 var boxWidth = 800;
 var boxHeight = 800;
 
-var drag = d3.behavior.drag()
-             .on('dragstart', function() { circle.style('fill', 'red'); })
-             .on('drag', function() { circle.attr('cx', d3.event.x)
-                                            .attr('cy', d3.event.y); })
-             .on('dragend', function() { circle.style('fill', 'black'); });
+// var drag = d3.behavior.drag()
+//              .on('dragstart', function() { circle.style('fill', 'red'); })
+//              .on('drag', function() { circle.attr('cx', d3.event.x)
+//                                             .attr('cy', d3.event.y); })
+//               .on('dragend', function() { circle.style('fill', 'black'); });
 
-var circle = d3.select('.board').selectAll('.player')
-                .data([{ x: (boxWidth / 2), y: (boxHeight / 2), r: 15 }])
+// var circle = d3.select('.board').selectAll('.player')
+//                 .data([{ x: (boxWidth / 2), y: (boxHeight / 2), r: 15 }])
+//                 .enter()
+//                 .append('svg:circle')
+//                 .attr('class', 'player')
+//                 .attr('cx', function(d) { return d.x; })
+//                 .attr('cy', function(d) { return d.y; })
+//                 .attr('r', function(d) { return d.r; })
+//                 .call(drag)
+//                 .style('fill', 'black');
+
+// var keyPress = $('.player').on('keydown',function(event){
+//   if(event.key==="ArrowUp"){
+
+//   }
+//   if(event.key==="ArrowDown"){
+
+//   }
+//   if(event.key==="ArrowLeft"){
+
+//   }
+//   if(event.key==="ArrowRight"){
+
+//   }
+
+//  });
+
+var player = d3.select('.board').selectAll('.player')
+                .data([{ x: (boxWidth / 2), y: (boxHeight / 2)}])
                 .enter()
-                .append('svg:circle')
+                .append('svg:image')
                 .attr('class', 'player')
-                .attr('cx', function(d) { return d.x; })
-                .attr('cy', function(d) { return d.y; })
-                .attr('r', function(d) { return d.r; })
-                .call(drag)
-                .style('fill', 'black');
-
+                .attr('x', function(d) { return d.x; })
+                .attr('y', function(d) { return d.y; })
+                .attr('height', function(d) { return 50; })
+                .attr('width', function(d) { return 50; })
+                .attr('xlink:href', "dancingcowboydone2.gif")
+                // .call(keyPress);
 
 
 var randCoord=function(){
@@ -37,10 +64,10 @@ var createEnemies= function(n){
 }
 
 var addEnemies = function(){
-  d3.select('.board').selectAll('image').data(gameEnemies)
+  d3.select('.board').selectAll('.enemy').data(gameEnemies)
   .enter().append('image')
   .attr('id', 'image')
-  .attr('xlink:href', "giphy.gif")
+  .attr('xlink:href', "o_cow.png")
   .attr('width', 100+"px")
   .attr('height', 100+"px")
   .attr('class', 'enemy')
@@ -60,7 +87,7 @@ var updateEnemyArray = function() {
     // run an update on each enemy
 }
 var updateEnemyPosition = function() {
-  d3.select('.board').selectAll('image').data(gameEnemies)
+  d3.select('.board').selectAll('.enemy').data(gameEnemies)
   .transition()
   .duration(1000)
   .attr('x',function(d){
@@ -88,8 +115,8 @@ var distance = function(x1, y1, x2, y2) {
 var checkCollision= function(){
   var _enemies=d3.selectAll('.enemy');
   var _player= d3.selectAll('.player');
-  var playerX = _player.attr('cx');
-  var playerY = _player.attr('cy');
+  var playerX = _player.attr('x');
+  var playerY = _player.attr('y');
   var scoreBoard = d3.select('body').selectAll('.scoreCount').text()
   score++;
   d3.select('body').selectAll('.scoreCount').text(score);
@@ -100,7 +127,7 @@ var checkCollision= function(){
   _enemies.each(function() {
     var enemyX = d3.select(this).attr('x');
     var enemyY = d3.select(this).attr('y');
-    if(distance(enemyX,enemyY,playerX,playerY)<30){
+    if(distance(enemyX,enemyY,playerX,playerY)<50){
       var temp= d3.select('body').selectAll('.collisionCount').text();
       d3.select('body').selectAll('.collisionCount').text(parseInt(temp)+1);
       // debugger;

@@ -7,7 +7,12 @@ Feel free to use it if you like. */
   border: 1px black solid;
   width: 1000px;
   height: 800px;
-  background-image:url('giphy.gif');
+  background-image:url('background21.gif');
+  background-size: contain;
+  background-repeat: round;
+}
+.player{
+  background-image:url('dancingcowboydone2.gif');
 }
 
 /*.spin{
